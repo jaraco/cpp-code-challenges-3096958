@@ -13,6 +13,17 @@
 #include <iostream>
 #include <vector>
 
+
+int cmp(int i, int j) {
+    if(i > j) {
+        return 1;
+    }
+    if(j < i) {
+        return -1;
+    }
+    return 0;
+}
+
 // is_bitonic()
 // Summary: This function receives an STL vector of integers and returns true if it contains a bitonic sequence, false otherwise.
 // Arguments:
@@ -20,9 +31,19 @@
 // Returns: A boolean value: True for bitonic sequences, false otherwise.
 bool is_bitonic(const std::vector<int> &v){
     
-    // Write your code here
+    int n_slopes = 0;
 
-    return false;
+    int last_slope = 0;
+
+    for (int i = 0; i < v.size(); i++) {
+        int current_slope = cmp(v[(i+1)%v.size()], v[i]);
+        if(current_slope && current_slope != last_slope) {
+            n_slopes += 1;
+        }
+        last_slope = current_slope ? current_slope : last_slope;
+    }
+
+    return n_slopes <= 2;
 }
 
 // Main function
