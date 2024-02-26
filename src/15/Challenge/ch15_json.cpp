@@ -12,6 +12,45 @@
 #include <string>
 #include <stack>
 
+
+int check_valid_JSON(std::string rest) {
+    std::stack<char> context;
+
+    while(rest.length()) {
+        int pos = rest.find_first_of("[]{}\"");
+        if(pos == std::string::npos) {
+            // no more characters; return true if the context is empty
+            return context.empty();
+        }
+        if(rest[pos] == '"') {
+            // jump to the close quote
+            pos = rest.find_first_of("\"");
+            if(pos == std::string::npos) {
+                // unmatched quote
+                return 0;
+            }
+        }
+        else{
+            switch(rest[pos]) {
+            case '[':
+                context.push('['); break;
+            case '{':
+                context.push('{'); break;
+            case ']':
+                if (context.top() != '[') return 0;
+                context.pop();
+                break;
+            case '}':
+                if(context.top() != '{') return 0;
+                context.pop();
+                break;
+            }
+        }
+        rest = rest.substr(pos+1, std::string::npos);
+    }
+    return 1;
+}
+
 // is_valid_JSON()
 // Summary: This function returns true if the file in the argument is a valid JSON file based on its balance of braces, brackets, and quotes.
 // Arguments:
@@ -22,14 +61,15 @@ int is_valid_JSON(std::string filename){
     bool quotes = false; 
 
     std::fstream file (filename, std::ios::in);
-    if(file.is_open()){
- 
-        // Write your code here
-
-        file.close();
-    }
-    else
+    if(!file.is_open()){
         return -1;
+    }
+
+    std::string contents{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
+
+    file.close();
+
+    return check_valid_JSON(contents);
 }
 
 // JSON File Validation, main()
