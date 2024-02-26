@@ -6,6 +6,16 @@
 
 #include <iostream>
 #include <algorithm>
+#include <cctype>
+
+
+std::string to_lower(std::string str) {
+    std::string out;
+    for(int i=0; i < str.length(); i++) {
+        out += std::tolower(str[i]);
+    }
+    return out;
+}
 
 // is_palindrome()
 // Summary: This function receives a string and returns true if the string is a palindrome, false otherwise.
@@ -14,9 +24,13 @@
 // Returns: A boolean value. True for palindromes, false otherwise.
 bool is_palindrome(std::string str){
 
-    // Write your code here
+    std::string clean = to_lower(str);
 
-    return false;
+    for(int i=0; i < clean.length() / 2; i++) {
+        if(clean[i] != clean[clean.length()-i-1]) return false;
+    }
+
+    return true;
 }
 
 // Main function
