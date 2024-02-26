@@ -8,6 +8,19 @@
 
 #include <iostream>
 
+
+bool swap_one(int *arr, int n) {
+    for(int i = 0; i < n - 1; i++) {
+        if(arr[i] > arr[i+1]) {
+            int temp = arr[i+1];
+            arr[i+1] = arr[i];
+            arr[i] = temp;
+            return true;
+        }
+    }
+    return false;
+}
+
 // sort_array()
 // Summary: This function receives an array of integers and sorts it in ascending order.
 // Arguments:
@@ -16,15 +29,15 @@
 // Returns: A boolean value: True on success, false otherwise.
 bool sort_array(int *arr, int n){
 
-    // Write your code here
+    while(swap_one(arr, n));
 
-    return false;
+    return true;
 }
 
 // Main function
 int main(){
     // The following array will be treated as an array of length len. 
-    const int len = 7; // Don't exceed the length of the array below!
+    const int len = 10; // Don't exceed the length of the array below!
     int array[] = {2, 9, 4, 3, 5, 1, 6, 8, 0, 7};
 
     // Print the original array
