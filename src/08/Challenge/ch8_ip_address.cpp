@@ -9,6 +9,19 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
+
+std::vector<std::string> split_string(const std::string& str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::stringstream ss(str);  // Create a stringstream for convenient extraction
+
+    while (std::getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
 
 // is_valid_ip()
 // Summary: This function validates an IP address.
@@ -18,8 +31,19 @@
 bool is_valid_ip(std::string ip){
 
     // Write your code here
+    std::vector<std::string> nums = split_string(ip, '.');
+    if (nums.size() != 4) return false;
+    for(std::string str: nums) {
+        try {
+            int num = std::stoi(str);
+            if(num > 256 || num < 0) return false;
+        }
+        catch (const std::invalid_argument &e) {
+            return false;
+        }
+    }
 
-    return false;
+    return true;
 }
 
 // Main function
